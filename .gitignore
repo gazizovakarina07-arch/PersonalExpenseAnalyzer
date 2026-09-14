@@ -427,3 +427,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+# Personal Expense Analyzer
+/out/
+/build/
+/data/*.db
+/data/*.sqlite
+/data/*.sqlite3
