@@ -10,9 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Статическая библиотека с предметной логикой приложения.
-# Позднее сюда будут добавляться другие файлы domain и application.
 add_library(expense_core STATIC
     src/domain/Category.cpp
+    src/domain/Date.cpp
 )
 
 # Папка с открытыми заголовочными файлами библиотеки.
@@ -42,16 +42,33 @@ add_executable(category_tests
     tests/CategoryTests.cpp
 )
 
-# Тесты проверяют тот же предметный код, что и приложение.
+# Тесты Category используют предметную библиотеку expense_core.
 target_link_libraries(category_tests
     PRIVATE
         expense_core
 )
 
-# Регистрация тестовой программы в CTest.
+# Регистрация тестовой программы Category в CTest.
 add_test(
     NAME category_tests
     COMMAND category_tests
+)
+
+# Отдельная исполняемая программа с тестами класса Date.
+add_executable(date_tests
+    tests/DateTests.cpp
+)
+
+# Тесты Date используют предметную библиотеку expense_core.
+target_link_libraries(date_tests
+    PRIVATE
+        expense_core
+)
+
+# Регистрация тестовой программы Date в CTest.
+add_test(
+    NAME date_tests
+    COMMAND date_tests
 )
 
 # Компилятору Microsoft явно указывается кодировка UTF-8.
@@ -68,6 +85,11 @@ if(MSVC)
     )
 
     target_compile_options(category_tests
+        PRIVATE
+            /utf-8
+    )
+
+    target_compile_options(date_tests
         PRIVATE
             /utf-8
     )
